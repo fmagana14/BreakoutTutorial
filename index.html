@@ -53,6 +53,8 @@
     let dx = 2;
     let dy = -2;
     let score = 0;
+    let lives = 3;
+
 
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
@@ -98,7 +100,6 @@
                         if (score === brickRowCount * brickColumnCount) {
                         alert("YOU WIN, CONGRATULATIONS!");
                         document.location.reload();
-                        clearInterval(interval); // Needed for Chrome to end game
                     }
                 }
             }
@@ -106,12 +107,6 @@
     }
 }
 
-
-    function drawScore() {
-        ctx.font = "16px Arial";
-        ctx.fillStyle = "#0095DD";
-        ctx.fillText(`Score: ${score}`, 8, 20);
-    }
 
 
 // display ball
@@ -150,6 +145,19 @@
     }
 }
 
+    function drawScore() {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText(`Score: ${score}`, 8, 20);
+    }
+
+    function drawLives() {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
+    }
+
+
 // ball mocement
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -158,6 +166,7 @@
         drawPaddle();
         collisionDetection();
         drawScore();
+        drawLives();
         if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
         dx = -dx;
         }
@@ -169,10 +178,18 @@
         {
             dy = -dy;
             } else {
+                lives--;
+                if (!lives) {
                 alert("GAME OVER");
                 document.location.reload();
-                clearInterval(interval);
-             }
+            } else {
+                x = canvas.width / 2;
+                y = canvas.height - 30;
+                dx = 3;
+                dy = -3;
+                paddleX = (canvas.width - paddleWidth) / 2;
+            }
+        }
         }
         if(rightPressed) {
             paddleX += 7;
@@ -188,12 +205,14 @@
         }
         x += dx;
         y += dy;
+        requestAnimationFrame(draw);
+
     }
 
 
 
 
-    const interval = setInterval(draw, 10);
+    draw();
 
 
 
