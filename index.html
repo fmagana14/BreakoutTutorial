@@ -9,7 +9,7 @@
         margin: 0;
       }
       canvas {
-        background: #eee;
+        background: #e9c46a;
         display: block;
         margin: 0 auto;
       }
@@ -113,7 +113,7 @@
     function drawBall() {
         ctx.beginPath();
         ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-        ctx.fillStyle = "#0095DD";
+        ctx.fillStyle = "#2a9d8f";
         ctx.fill();
         ctx.closePath();
     }
@@ -121,7 +121,7 @@
     function drawPaddle() {
         ctx.beginPath();
         ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-        ctx.fillStyle = "#0095DD";
+        ctx.fillStyle = "#2a9d8f";
         ctx.fill();
         ctx.closePath();
         
@@ -137,7 +137,7 @@
                 bricks[c][r].y = brickY;
                 ctx.beginPath();
                 ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                ctx.fillStyle = "#0095DD";
+                ctx.fillStyle = "#264653";
                 ctx.fill();
                 ctx.closePath();
             }
