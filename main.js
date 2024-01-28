@@ -24,16 +24,19 @@ for (let c = 0; c < brickColumnCount; c += 1) {
   }
 }
 
-let paddleX = paddleXStart;
 let rightPressed = false;
 let leftPressed = false;
-let x = canvas.width / 2;
-let y = canvas.height - 30;
-let dx = 2;
-let dy = -2;
+
+let paddleX;
+let x;
+let y;
+let dx;
+let dy;
+
+resetBallAndPaddle();
+
 let score = 0;
 let lives = 3;
-
 // Event listener
 function mouseMoveHandler(e) {
   const relativeX = e.clientX - canvas.offsetLeft;
@@ -132,8 +135,12 @@ function drawLives() {
   ctx.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
 }
 
-function resetBallAndPaddle(){
-    
+function resetBallAndPaddle() {
+  x = canvas.width / 2;
+  y = canvas.height - 30;
+  dx = 3;
+  dy = -3;
+  paddleX = paddleXStart;
 }
 // Game Loop
 function draw() {
@@ -158,11 +165,7 @@ function draw() {
         alert('GAME OVER');
         document.location.reload();
       } else {
-        x = canvas.width / 2;
-        y = canvas.height - 30;
-        dx = 3;
-        dy = -3;
-        paddleX = paddleXStart;
+        resetBallAndPaddle();
       }
     }
   }
