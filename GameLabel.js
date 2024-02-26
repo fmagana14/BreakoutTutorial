@@ -14,3 +14,4 @@ class GameLabel {
     ctx.fillText(`${this.text} ${this.value}`, this.x, this.y);
   }
 }
+export default GameLabel;

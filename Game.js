@@ -1,8 +1,10 @@
+import Background from './background.js';
+// import all classes except game label
 class Game {
-  constructor(myCanvas) {
-    this.canvas = document.getElementById('myCanvas');
+  constructor(CanvasId) {
+    this.canvas = document.getElementById(CanvasId);
     this.ctx = canvas.getContext('2d');
-
+ 
     this.ballRadius = 10;
     // paddle sizing
     this.paddleHeight = 10;
@@ -16,14 +18,29 @@ class Game {
     this.brickOffsetLeft = 30;
     this.paddleXStart = (this.canvas.width - this.paddleWidth) / 2;
     this.paddleYStart = this.canvas.height - this.paddleHeight;
-    this.PI2 = Math.PI * 2;
     this.gameOverMessage = 'GAME OVER';
     this.objectColor = '#264653';
 
     this.ball = new Ball(0, 0, 2, -2, this.ballRadius, this.objectColor);
     // eslint-disable-next-line max-len
-    this.paddle = new Paddle(this.paddleXStart, this.paddleYStart, this.paddleWidth, this.paddleHeight, this.objectColor);
-    this.bricks = new Bricks(this.brickColumnCount, this.brickRowCount);
+    this.paddle = new Paddle(
+      this.paddleXStart,
+      this.paddleYStart,
+      this.paddleWidth,
+      this.paddleHeight,
+      this.objectColor,
+    );
+    this.bricks = new Bricks({
+      cols: this.brickColumnCount,
+      rows: this.brickRowCount,
+      width: this.brickWidth,
+      height: this.brickHeight,
+      padding: this.brickPadding,
+      offsetTop: this.brickOffsetTop,
+      offsetLeft: this.brickOffsetLeft,
+      color: this.objectColor,
+    });
+    //
     this.scoreLable = new GameLabel('Score: ', 8, 20);
     this.livesLable = new GameLabel('Lives: ', this.canvas.width - 65, 20);
 
@@ -40,11 +57,19 @@ class Game {
 
     this.resetBallAndPaddle();
 
-    document.addEventListener('keydown', (e) => {
-      this.keyDownHandler(e);
-    }, false);
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        this.keyDownHandler(e);
+      },
+      false
+    );
     document.addEventListener('keyup', this.keyUpHandler.bind(this), false);
-    document.addEventListener('mousemove', this.mouseMoveHandler.bind(this), false);
+    document.addEventListener(
+      'mousemove',
+      this.mouseMoveHandler.bind(this),
+      false
+    );
   }
 
   resetBallAndPaddle() {
@@ -61,10 +86,10 @@ class Game {
         const brick = this.bricks.bricks[c][r];
         if (brick.status === 1) {
           if (
-            this.ball.x > brick.x
-              && this.ball.x < brick.x + this.brickWidth
-              && this.ball.y > brick.y
-              && this.ball.y < brick.y + this.brickHeight
+            this.ball.x > brick.x &&
+            this.ball.x < brick.x + this.brickWidth &&
+            this.ball.y > brick.y &&
+            this.ball.y < brick.y + this.brickHeight
           ) {
             this.ball.dy = -this.ball.dy;
             brick.status = 0;
@@ -81,7 +106,10 @@ class Game {
   }
 
   movePaddle() {
-    if (this.rightPressed && this.paddle.x < this.canvas.width - this.paddle.width) {
+    if (
+      this.rightPressed &&
+      this.paddle.x < this.canvas.width - this.paddle.width
+    ) {
       this.paddle.x += 7;
       this.paddle.moveBy(7, 0);
     } else if (this.leftPressed && this.paddle.x > 0) {
@@ -92,15 +120,21 @@ class Game {
 
   collisionWithCanvasAndPaddle() {
     if (
-      this.ball.x + this.ball.dx > this.canvas.width - this.ball.radius
-        || this.ball.x + this.ball.dx < this.ball.radius
+      this.ball.x + this.ball.dx > this.canvas.width - this.ball.radius ||
+      this.ball.x + this.ball.dx < this.ball.radius
     ) {
       this.ball.dx = -this.ball.dx;
     }
     if (this.ball.y + this.ball.dy < this.ball.radius) {
       this.ball.dy = -this.ball.dy;
-    } else if (this.ball.y + this.ball.dy > this.canvas.height - this.ball.radius) {
-      if (this.ball.x > this.paddle.x && this.ball.x < this.paddle.x + this.paddle.width) {
+    } else if (
+      this.ball.y + this.ball.dy >
+      this.canvas.height - this.ball.radius
+    ) {
+      if (
+        this.ball.x > this.paddle.x &&
+        this.ball.x < this.paddle.x + this.paddle.width
+      ) {
         this.ball.dy = -this.ball.dy;
       } else {
         this.livesLable.value -= 1;
@@ -142,7 +176,7 @@ class Game {
 
   draw() {
     // console.log('***game.draw()****', this);
-    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.bricks.render(this.ctx);
     this.ball.render(this.ctx);
     this.paddle.render(this.ctx);
