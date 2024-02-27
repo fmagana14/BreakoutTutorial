@@ -1,10 +1,17 @@
-import Background from './background.js';
+import Background from "./background.js";
+import Ball from "./Ball.js";
+import Bricks from "./bricks.js";
+import GameLabel from "./GameLabel.js";
+import Lives from "./Lives.js";
+import Score from "./Score.js";
+import Paddle from "./Paddle.js";
+
 // import all classes except game label
 class Game {
-  constructor(CanvasId) {
-    this.canvas = document.getElementById(CanvasId);
-    this.ctx = canvas.getContext('2d');
- 
+  constructor(CanvasId, ctx) {
+    this.canvas = CanvasId;
+    this.ctx = ctx;
+
     this.ballRadius = 10;
     // paddle sizing
     this.paddleHeight = 10;
@@ -18,8 +25,8 @@ class Game {
     this.brickOffsetLeft = 30;
     this.paddleXStart = (this.canvas.width - this.paddleWidth) / 2;
     this.paddleYStart = this.canvas.height - this.paddleHeight;
-    this.gameOverMessage = 'GAME OVER';
-    this.objectColor = '#264653';
+    this.gameOverMessage = "GAME OVER";
+    this.objectColor = "#264653";
 
     this.ball = new Ball(0, 0, 2, -2, this.ballRadius, this.objectColor);
     // eslint-disable-next-line max-len
@@ -28,21 +35,21 @@ class Game {
       this.paddleYStart,
       this.paddleWidth,
       this.paddleHeight,
-      this.objectColor,
+      this.objectColor
     );
-    this.bricks = new Bricks({
-      cols: this.brickColumnCount,
-      rows: this.brickRowCount,
-      width: this.brickWidth,
-      height: this.brickHeight,
-      padding: this.brickPadding,
-      offsetTop: this.brickOffsetTop,
-      offsetLeft: this.brickOffsetLeft,
-      color: this.objectColor,
-    });
+    this.bricks = new Bricks(
+      (this.brickColumnCount = 5),
+      (this.brickRowCount = 3),
+      (this.brickWidth = 75),
+      (this.brickHeight = 20),
+      (this.brickPadding = 10),
+      (this.brickOffsetTop = 30),
+      (this.brickOffsetLeft = 30),
+      (this.objectColor = "blue")
+    );
     //
-    this.scoreLable = new GameLabel('Score: ', 8, 20);
-    this.livesLable = new GameLabel('Lives: ', this.canvas.width - 65, 20);
+    this.scoreLable = new GameLabel("Score: ", 8, 20);
+    this.livesLable = new GameLabel("Lives: ", this.canvas.width - 65, 20);
 
     this.rightPressed = false;
     this.leftPressed = false;
@@ -58,15 +65,15 @@ class Game {
     this.resetBallAndPaddle();
 
     document.addEventListener(
-      'keydown',
+      "keydown",
       (e) => {
         this.keyDownHandler(e);
       },
       false
     );
-    document.addEventListener('keyup', this.keyUpHandler.bind(this), false);
+    document.addEventListener("keyup", this.keyUpHandler.bind(this), false);
     document.addEventListener(
-      'mousemove',
+      "mousemove",
       this.mouseMoveHandler.bind(this),
       false
     );
@@ -96,7 +103,7 @@ class Game {
 
             this.scoreLable.value += 1;
             if (this.scoreLable.value === this.bricks.cols * this.bricks.rows) {
-              alert('YOU WIN, CONGRATULATIONS!');
+              alert("YOU WIN, CONGRATULATIONS!");
               document.location.reload();
             }
           }
@@ -139,9 +146,9 @@ class Game {
       } else {
         this.livesLable.value -= 1;
         if (this.livesLable.value < 1) {
-          alert(gameOverMessage);
-          this.ball.x = 200;
-          this.ball.y = 200;
+          alert(this.gameOverMessage);
+          this.ball.x = 50;
+          this.ball.y = 50;
           document.location.reload();
         } else {
           this.resetBallAndPaddle();
@@ -159,17 +166,17 @@ class Game {
   }
 
   keyDownHandler(e) {
-    if (e.key === 'Right' || e.key === 'ArrowRight') {
+    if (e.key === "Right" || e.key === "ArrowRight") {
       this.rightPressed = true;
-    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+    } else if (e.key === "Left" || e.key === "ArrowLeft") {
       this.leftPressed = true;
     }
   }
 
   keyUpHandler(e) {
-    if (e.key === 'Right' || e.key === 'ArrowRight') {
+    if (e.key === "Right" || e.key === "ArrowRight") {
       this.rightPressed = false;
-    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+    } else if (e.key === "Left" || e.key === "ArrowLeft") {
       this.leftPressed = false;
     }
   }
@@ -194,3 +201,5 @@ class Game {
     });
   }
 }
+
+export default Game;

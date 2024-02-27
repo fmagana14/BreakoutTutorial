@@ -1,15 +1,15 @@
-import Brick from './Brick.js';
+import Brick from "./Brick.js";
 
 class Bricks {
-  constructor(options) {
-    this.cols = options.ols;
-    this.rows = options.rows;
-    this.width = options.width; 
-    this.height = options.height;
-    this.padding = options.padding;
-    this.offsetTop = options.offsetTop;
-    this.offsetLeft = options.offsetLeft;
-    this.color = options.color;
+  constructor(cols, rows, width, height, padding, offsetTop, offsetLeft, color) {
+    this.cols = cols;
+    this.rows = rows;
+    this.width = width;
+    this.height = height;
+    this.padding = padding;
+    this.offsetTop = offsetTop;
+    this.offsetLeft = offsetLeft;
+    this.color = color;
     this.bricks = [];
     this.init();
   }
@@ -20,13 +20,14 @@ class Bricks {
       for (let r = 0; r < this.rows; r += 1) {
         const brickX = c * (this.width + this.padding) + this.offsetLeft;
         const brickY = r * (this.height + this.padding) + this.offsetTop;
-
+        console.log('bricksMade');
         this.bricks[c][r] = new Brick(
           brickX,
           brickY,
           this.width,
           this.height,
-          this.color;
+          this.color,
+        );
       }
     }
   }
