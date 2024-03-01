@@ -1,5 +1,5 @@
 class Sprite {
-  constructor(x = 0, y = 0, width = 100, height = 100, color = 'red') {
+  constructor(x = 0, y = 0, width = 100, height = 100, color = '#2a9d8f') {
     this.x = x;
     this.y = y;
     this.width = width;
